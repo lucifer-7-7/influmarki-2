@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', (event) => {
     // Set the date we're counting down to
-    const countDownDate = new Date("Dec 20, 2025 00:00:00").getTime();
+    const countDownDate = new Date("May 31, 2026 23:59:59").getTime();
 
     // Update the count down every 1 second
     const countdownFunction = setInterval(() => {
@@ -64,33 +64,14 @@ document.querySelector('.form-button').addEventListener('click', () => {
         return;
     }
 
-    fetch('/emails', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Email submitted successfully:', data);
-        if (data.status == "exists") {
-            document.querySelectorAll(".submit-text").forEach((element) => {
-                element.innerText = "Exists";
-                document.querySelector('#email').value  = "";
-                document.querySelector('#email').style.pointerEvents = "none";
-            });
-        } else if(data.status == "success"){ 
-            document.querySelectorAll(".submit-text").forEach((element) => {
-                element.innerText = "Thanks!";
-                document.querySelector('#email').value  = "";
-                document.querySelector('#email').style.pointerEvents = "none";
-            });
-        }
-        // Optionally, display a success message to the user
-    })
-    .catch(error => {
-        console.error('Error submitting email:', error);
-        // Optionally, display an error message to the user
+    const message = encodeURIComponent('Waitlist signup email: ' + email);
+    const whatsappUrl = 'https://wa.me/918197242025?text=' + message;
+
+    document.querySelectorAll(".submit-text").forEach((el) => {
+        el.innerText = "Thanks!";
     });
+    document.querySelector('#email').value = "";
+    document.querySelector('#email').style.pointerEvents = "none";
+
+    window.open(whatsappUrl, '_blank');
 });
